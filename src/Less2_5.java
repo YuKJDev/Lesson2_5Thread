@@ -71,7 +71,7 @@ public class Less2_5 {
 
     public void doSecondArr() {
         System.out.println("Старт метода 2");
-        Thread[] threads = new Thread[n]; // Создадим массив из 4 потоков
+        Thread[] threads = new Thread[n]; // Создадим массив из  потоков
         Arrays.fill(arr, 1.0f);
         float[] a1 = new float[h];
         float[] a2 = new float[h];
