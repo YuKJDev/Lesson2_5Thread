@@ -71,34 +71,44 @@ public class Less2_5 {
 
     public void doSecondArr() {
         System.out.println("Старт метода 2");
-       // Thread[] threads = new Thread[n]; // Создадим массив из  потоков
-        Thread thread1 = new Thread();
-        Thread thread2 = new Thread();
+        // Thread[] threads = new Thread[n]; // Создадим массив из  потоков
+        Thread thread1;
+        Thread thread2;
         Arrays.fill(arr, 1.0f);
         float[] a1 = new float[h];
         float[] a2 = new float[h];
         long a = System.currentTimeMillis();
-       // for (int i = 0; i < n; i++) {
-            System.arraycopy(arr, 0, a1, 0, h);
-            System.arraycopy(arr, h, a2, 0, h);
+        // for (int i = 0; i < n; i++) {
+        System.arraycopy(arr, 0, a1, 0, h);
+        System.arraycopy(arr, h, a2, 0, h);
 
-       // }
+        // }
         long split = System.currentTimeMillis();
         System.out.println("Время разделения массива " + (split - a));
-       // for (int i = 0; i < n; i++) {
-           // int finI = i;
-            thread1 = new Thread(() -> this.calcSecondArr(a1, 1));
-            thread2 = new Thread(() -> this.calcSecondArr(a2, 2));
-            thread1.start();
-            thread2.start();
+        // for (int i = 0; i < n; i++) {
+        // int finI = i;
+        System.out.println("Start 1");
+        thread1 = new Thread(() -> this.calcSecondArr(a1, 1));
+        System.out.println("Stop 1");
+        System.out.println("Start 2");
+        thread2 = new Thread(() -> this.calcSecondArr(a2, 2));
+        System.out.println("Stop 2");
+        synchronized (a1) {
+            synchronized (a2) {
+                thread1.start();
+            }
 
-     //   }
+            thread2.start();
+        }
+        System.out.println("End");
+
+        //   }
 
         long concat = System.currentTimeMillis();
-       // for (int i = 0; i < n; i++) {
-            System.arraycopy(a1, 0, arr, 0, h);
-            System.arraycopy(a2, 0, arr, h, h);
-      //  }
+        // for (int i = 0; i < n; i++) {
+        System.arraycopy(a1, 0, arr, 0, h);
+        System.arraycopy(a2, 0, arr, h, h);
+        //  }
         long end = System.currentTimeMillis();
         System.out.println("Время склейки массива " + (end - concat));
         System.out.println("Время выполнения второго метода " + (end - a));
@@ -108,10 +118,10 @@ public class Less2_5 {
     private synchronized void calcSecondArr(float[] arr, int n) {
         long start = System.currentTimeMillis();
         for (int i = 0; i < arr.length; i++) {
-                arr[i] = (float) (arr[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
-            }
-            long end = System.currentTimeMillis();
-            System.out.println(String.format("Время выполнения потока %d равно %s", n, end - start));
+            arr[i] = (float) (arr[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
         }
+        long end = System.currentTimeMillis();
+        System.out.println(String.format("Время выполнения потока %d равно %s", n, end - start));
+    }
 
 }
